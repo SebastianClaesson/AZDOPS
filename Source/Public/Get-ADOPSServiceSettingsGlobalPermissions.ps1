@@ -5,8 +5,8 @@ function Get-ADOPSServiceSettingsGlobalPermissions {
 
         # Set to true to add IdentityIds to the permission objects.
         [Parameter()]
-        [bool]
-        $IncludeIds = $true
+        [switch]
+        $IncludeIds
     )
     
     # If user didn't specify org, get it from saved context
@@ -14,5 +14,5 @@ function Get-ADOPSServiceSettingsGlobalPermissions {
         $Organization = GetADOPSDefaultOrganization
     }
 
-    (InvokeADOPSRestMethod -Uri "https://feeds.dev.azure.com/$Organization/_apis/packaging/globalpermissions?includeIds={includeIds}&api-version=7.1" -Method Get).value
+    (InvokeADOPSRestMethod -Uri "https://feeds.dev.azure.com/$Organization/_apis/packaging/globalpermissions?includeIds=$IncludeIds&api-version=7.1" -Method Get).value
 }

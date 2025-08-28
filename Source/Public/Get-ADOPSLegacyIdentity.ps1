@@ -3,10 +3,13 @@ function Get-ADOPSLegacyIdentity {
         [Parameter()]
         [string]$Organization,
 
-        # Set to true to add IdentityIds to the permission objects.
         [Parameter()]
-        [bool]
-        $IncludeIds = $true
+        [string]
+        $IdentityId,
+
+        [Parameter()]
+        [string]
+        $Descriptor
     )
     
     # If user didn't specify org, get it from saved context
@@ -14,7 +17,5 @@ function Get-ADOPSLegacyIdentity {
         $Organization = GetADOPSDefaultOrganization
     }
 
-    (InvokeADOPSRestMethod -Uri "https://feeds.dev.azure.com/$Organization/_apis/identities&api-version=7.1" -Method Get).value
-
-_apis/identities?descriptors={descriptors}&identityIds={identityIds}&subjectDescriptors={subjectDescriptors}&searchFilter={searchFilter}&filterValue={filterValue}&queryMembership={queryMembership}
+    (InvokeADOPSRestMethod -Uri "https://vssps.dev.azure.com/$Organization/_apis/identities?identityIds=$IdentityId&descriptors=$descriptor&api-version=7.1" -Method Get).value
 }
